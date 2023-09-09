@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+    --app-primary-color: #be7f0b;
+}
+
+.button-primary {
+    background-color: var(--app-primary-color);
+    @apply text-white hover:bg-indigo-600 py-1 px-4 rounded-md transition duration-300 
+ }
+
+.button-danger {
+   @apply text-white hover:bg-red-600 bg-red-800 py-1 px-4 rounded-md transition duration-300
+}
+
+.font-color-label{
+    @apply text-black dark:text-white align-middle pt-1
+}
+
+.ant-form-item{
+    @apply  mb-0 min-[576px]:mb-2  md:mb-4
+}
+
+.ant-pagination{
+    @apply  mt-4 min-[576px]:mt-0
+}
+
+.ant-btn-primary{
+    background-color: var(--app-primary-color) !important;
+}
+
+.ant-tabs-top >.ant-tabs-nav{
+    @apply  mb-0
+}
+
+.luminiqa-card {
+    @apply p-2 sm:p-4 dark:bg-zinc-900/[0.5] rounded-b-lg
+}
+
+.bg-gradient {
+    background: rgb(4, 2, 32);
+}
+
+.bg-header {
+   background: rgb(2,0,62);
+   background: linear-gradient(45deg, rgba(2,0,62,1) 70%, rgba(255,203,0,1) 100%);
+}
+  
