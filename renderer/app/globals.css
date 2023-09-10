@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root{
-    --app-primary-color: #be7f0b;
+    --app-primary-color: #ca8a04;
 }
 
 .button-primary {
@@ -45,6 +45,6 @@
 
 .bg-header {
    background: rgb(2,0,62);
-   background: linear-gradient(45deg, rgba(2,0,62,1) 70%, rgba(255,203,0,1) 100%);
+   background: linear-gradient(45deg, rgba(2,0,62,1) 70%, rgb(202 138 4) 100%);
 }
   

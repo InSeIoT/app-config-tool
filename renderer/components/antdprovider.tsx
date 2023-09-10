@@ -14,7 +14,7 @@ export default function AntDProvider ({
       locale={esES} theme={{
         algorithm: theme.darkAlgorithm,
         token: {
-          colorPrimary: '#be7f0b'
+          colorPrimary: '#ca8a04'
         },
         components: {
           Input: {

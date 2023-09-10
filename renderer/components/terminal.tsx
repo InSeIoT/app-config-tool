@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
+import pty from 'node-pty';
+import os from 'os';
 import classNames from 'classnames';
 import 'xterm/css/xterm.css';
 
@@ -21,12 +23,18 @@ export default function TerminalComponent () {
    term.loadAddon(fitAddon);
    fitAddon.fit();
 
+   var shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
+   const process = pty.spawn(shell, [], {
+        name: 'xterm-color',
+        cols: 80,
+        rows: 24
+    });
+
    function sendData(str:String){
 
    }
    function prompt(){
-       let shellprompt="noobtopro$ "
-       term.write("\r\n"+shellprompt)
+       term.write(`\r\nuser$: `)
    }
 
    useEffect(()=>{
@@ -37,6 +45,10 @@ export default function TerminalComponent () {
            console.log(event.key)
            if(event.domEvent.key==="Backspace"){
                term.write("\b \b")
+           }
+           if(event.domEvent.key==="Enter"){
+                term.write("\r\n")
+                prompt()
            }
            else{
                term.write(event.domEvent.key)
