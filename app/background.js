@@ -5533,6 +5533,17 @@ module.exports = require("electron-store");
 
 /***/ }),
 
+/***/ "node-pty":
+/*!***************************!*\
+  !*** external "node-pty" ***!
+  \***************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node-pty");
+
+/***/ }),
+
 /***/ "electron":
 /*!***************************!*\
   !*** external "electron" ***!
@@ -5541,6 +5552,17 @@ module.exports = require("electron-store");
 
 "use strict";
 module.exports = require("electron");
+
+/***/ }),
+
+/***/ "os":
+/*!*********************!*\
+  !*** external "os" ***!
+  \*********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("os");
 
 /***/ }),
 
@@ -5810,10 +5832,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var electron_serve__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! electron-serve */ "electron-serve");
 /* harmony import */ var electron_serve__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(electron_serve__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers */ "./main/helpers/index.ts");
+/* harmony import */ var node_pty__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! node-pty */ "node-pty");
+/* harmony import */ var node_pty__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(node_pty__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var os__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! os */ "os");
+/* harmony import */ var os__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(os__WEBPACK_IMPORTED_MODULE_4__);
+
+
 
 
 
 const isProd = "development" === 'production';
+const shell = os__WEBPACK_IMPORTED_MODULE_4___default().platform() === "win32" ? "powershell.exe" : "bash";
 if (isProd) {
   electron_serve__WEBPACK_IMPORTED_MODULE_1___default()({
     directory: 'app'
@@ -5830,6 +5859,24 @@ if (isProd) {
     webPreferences: {
       nodeIntegration: true
     }
+  });
+  var ptyProcess = node_pty__WEBPACK_IMPORTED_MODULE_3__.spawn(shell, [], {
+    name: "xterm-color",
+    cols: 80,
+    rows: 30,
+    cwd: process.env.HOME,
+    env: process.env
+  });
+  console.log("cwd", process.env.HOME);
+  console.log("env", process.env);
+  ptyProcess.onData(function (data) {
+    mainWindow.webContents.send("terminal.incomingData", data);
+    // console.log("Data sent");
+  });
+
+  electron__WEBPACK_IMPORTED_MODULE_0__.ipcMain.on("terminal.keystroke", (event, key) => {
+    console.log(`Keystroke: ${key}`);
+    ptyProcess.write(key);
   });
   if (isProd) {
     await mainWindow.loadURL('app://.html');

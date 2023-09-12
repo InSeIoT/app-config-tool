@@ -1,8 +1,11 @@
-import { app } from 'electron';
+import { app, ipcMain } from 'electron';
 import serve from 'electron-serve';
 import { createWindow } from './helpers';
+import * as pty from 'node-pty';
+import os from 'os';
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
+const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
 
 if (isProd) {
   serve({ directory: 'app' });
@@ -21,6 +24,28 @@ if (isProd) {
       nodeIntegration: true,
     },
   });
+
+  var ptyProcess = pty.spawn(shell, [], {
+    name: "xterm-color",
+    cols: 80,
+    rows: 30,
+    cwd: process.env.HOME,
+    env: process.env
+  });
+
+  console.log("cwd", process.env.HOME);
+  console.log("env", process.env);
+
+  ptyProcess.onData(function(data) {
+      mainWindow.webContents.send("terminal.incomingData", data);
+      // console.log("Data sent");
+  });
+
+  ipcMain.on("terminal.keystroke", (event, key) => {
+      console.log(`Keystroke: ${key}`);
+      ptyProcess.write(key);
+  });
+
 
   if (isProd) {
     await mainWindow.loadURL('app://.html');
