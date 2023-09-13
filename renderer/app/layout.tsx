@@ -31,8 +31,10 @@ export default function RootLayout ({
                      {children}
                   </div>
                </div>
-         
-               <div className="bg-yellow-600 p-1">
+              <div className="h-6 px-2 cursor-ns-resize bg-yellow-700">
+                Terminal
+              </div>
+               <div className=" p-1">
                   <TerminalComponent />
                </div>
             </div>

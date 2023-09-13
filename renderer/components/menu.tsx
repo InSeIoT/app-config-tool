@@ -52,7 +52,7 @@ const items: MenuItem[] = [
 ];
 
 export default function MenuComponent() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);

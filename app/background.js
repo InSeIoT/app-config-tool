@@ -5853,9 +5853,9 @@ if (isProd) {
 (async () => {
   await electron__WEBPACK_IMPORTED_MODULE_0__.app.whenReady();
   const mainWindow = (0,_helpers__WEBPACK_IMPORTED_MODULE_2__.createWindow)('main', {
-    width: 1000,
-    height: 600,
-    frame: true,
+    width: 800,
+    height: 1200,
+    frame: false,
     webPreferences: {
       nodeIntegration: true
     }
@@ -5867,22 +5867,29 @@ if (isProd) {
     cwd: process.env.HOME,
     env: process.env
   });
-  console.log("cwd", process.env.HOME);
-  console.log("env", process.env);
   ptyProcess.onData(function (data) {
     mainWindow.webContents.send("terminal.incomingData", data);
-    // console.log("Data sent");
   });
-
   electron__WEBPACK_IMPORTED_MODULE_0__.ipcMain.on("terminal.keystroke", (event, key) => {
-    console.log(`Keystroke: ${key}`);
     ptyProcess.write(key);
+  });
+  electron__WEBPACK_IMPORTED_MODULE_0__.ipcMain.on('app.close', () => {
+    electron__WEBPACK_IMPORTED_MODULE_0__.app.quit();
+  });
+  electron__WEBPACK_IMPORTED_MODULE_0__.ipcMain.on('app.minimize', () => {
+    mainWindow.minimize();
+  });
+  electron__WEBPACK_IMPORTED_MODULE_0__.ipcMain.on('app.maximize', () => {
+    if (mainWindow.isMaximized()) {
+      mainWindow.unmaximize();
+    } else {
+      mainWindow.maximize();
+    }
   });
   if (isProd) {
     await mainWindow.loadURL('app://.html');
   } else {
     const port = process.argv[2];
-    console.log("Web port: ", port);
     await mainWindow.loadURL(`http://localhost:${port}`);
     mainWindow.webContents.openDevTools();
   }

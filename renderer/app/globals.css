@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 :root{
-    --app-primary-color: #ca8a04;
+    --app-primary-color: rgb(202 138 4);
+    --app-secondary-color: rgba(2,0,62);
 }
 
 .button-primary {
@@ -44,7 +45,10 @@
 }
 
 .bg-header {
-   background: rgb(2,0,62);
-   background: linear-gradient(45deg, rgba(2,0,62,1) 70%, rgb(202 138 4) 100%);
+   background: var(--app-primary-color);
+   background: linear-gradient(45deg, var(--app-secondary-color) 60%, var(--app-primary-color) 100%);
 }
-  
+
+.header-drag-zone{
+    -webkit-app-region: drag;
+}
